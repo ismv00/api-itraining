@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+
+}
+
+enum Role {
+  PERSONAL
+  STUDENT
+}
+
+enum LinkStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // 🔗 Relações de vínculo
+  personalLinks PersonalStudent[] @relation("PersonalLink")
+  studentLinks  PersonalStudent[] @relation("StudentLink")
+
+  workoutsCreated Workout[] @relation("WorkoutCreator")
+  workouts        Workout[]
+}
+
+model PersonalStudent {
+  id String @id @default(uuid())
+
+  personal   User @relation("PersonalLink", fields: [personalId], references: [id])
+  personalId String
+
+  student    User @relation("StudentLink", fields: [studentId], references: [id])
+  studentId  String
+
+  status     LinkStatus @default(PENDING)
+
+  createdAt  DateTime @default(now())
+
+  @@unique([personalId, studentId])
+}
+
+model Workout {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  student     User @relation(fields: [studentId], references: [id])
+  studentId   String
+
+  createdBy   User @relation("WorkoutCreator", fields: [createdById], references: [id])
+  createdById String
+
+  exercises Exercise[]
+}
+
+model Exercise {
+  id String @id @default(uuid())
+  name String
+  sets Int
+  reps Int
+  weight Float?
+  finalWeight Float?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  workout Workout @relation(fields: [workoutId], references: [id])
+  workoutId String
+}
