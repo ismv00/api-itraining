@@ -95,4 +95,13 @@ export class LinkController {
       next(error);
     }
   }
+
+  async getApprovedLink(req: Request, res: Response, next: NextFunction) {
+    try {
+      const link = await service.getApprovedLink(req.user!.userId);
+      res.json(link);
+    } catch (error) {
+      next(error);
+    }
+  }
 }

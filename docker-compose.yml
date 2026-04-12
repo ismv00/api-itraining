@@ -34,5 +34,18 @@ services:
         condition: service_healthy
     command: sh -c "npx prisma migrate deploy && npm start"
 
+  frontend:
+    build:
+      context: ../frontend-itraining
+      dockerfile: Dockerfile
+    container_name: itraining-frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:3333
+    depends_on:
+      - api
+
 volumes:
   pgdata:

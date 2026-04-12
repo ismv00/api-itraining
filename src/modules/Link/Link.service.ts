@@ -143,4 +143,22 @@ export class LinkService {
       data: { status: "REJECTED" },
     });
   }
+
+  async getApprovedLink(studentId: string) {
+    return prisma.personalStudent.findFirst({
+      where: {
+        studentId,
+        status: "APPROVED",
+      },
+      include: {
+        personal: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
+  }
 }

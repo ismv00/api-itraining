@@ -56,4 +56,11 @@ router.patch(
   controller.rejectByPersonal,
 );
 
+router.get(
+  "/approved",
+  authMiddleware,
+  roleMiddleware(Role.STUDENT),
+  controller.getApprovedLink,
+);
+
 export { router as linkRoutes };
