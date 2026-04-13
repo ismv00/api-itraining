@@ -45,10 +45,10 @@ model User {
 model PersonalStudent {
   id String @id @default(uuid())
 
-  personal   User @relation("PersonalLink", fields: [personalId], references: [id])
+  personal   User @relation("PersonalLink", fields: [personalId], references: [id],onDelete: Cascade)
   personalId String
 
-  student    User @relation("StudentLink", fields: [studentId], references: [id])
+  student    User @relation("StudentLink", fields: [studentId], references: [id],onDelete: Cascade)
   studentId  String
 
   status     LinkStatus @default(PENDING)
@@ -65,7 +65,7 @@ model Workout {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  student     User @relation(fields: [studentId], references: [id])
+  student     User @relation(fields: [studentId], references: [id], onDelete: Cascade)
   studentId   String
 
   createdBy   User @relation("WorkoutCreator", fields: [createdById], references: [id])
@@ -84,6 +84,6 @@ model Exercise {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  workout Workout @relation(fields: [workoutId], references: [id])
+  workout Workout @relation(fields: [workoutId], references: [id], onDelete: Cascade)
   workoutId String
 }

@@ -2,6 +2,10 @@ import { Request, Response, NextFunction } from "express";
 import { AppError } from "../../utils/AppError";
 import { prisma } from "../../database/prisma";
 
+import { UserService } from "./user.service";
+
+const userService = new UserService();
+
 export class UserController {
   async me(req: Request, res: Response) {
     try {
@@ -49,6 +53,15 @@ export class UserController {
       }
 
       return res.json(personal);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteAccount(req: Request, res: Response, next: NextFunction) {
+    try {
+      await userService.deleteAccount(req.user!.userId);
+      res.status(204).send();
     } catch (error) {
       next(error);
     }

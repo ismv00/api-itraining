@@ -15,4 +15,6 @@ router.post(
 );
 router.get("/", authMiddleware, controller.list);
 
+router.delete("/:id", authMiddleware, controller.delete);
+
 export { router as workoutRoutes };

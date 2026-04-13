@@ -161,4 +161,17 @@ export class LinkService {
       },
     });
   }
+
+  async unlinkStudent(linkId: string, personalId: string) {
+    const link = await prisma.personalStudent.findUnique({
+      where: { id: linkId },
+    });
+
+    if (!link) throw new AppError("Link not found", 404);
+    if (link.personalId !== personalId) throw new AppError("Forbidden", 403);
+
+    await prisma.personalStudent.delete({
+      where: { id: linkId },
+    });
+  }
 }

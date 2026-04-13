@@ -23,4 +23,6 @@ router.get(
   controller.findPersonal,
 );
 
+router.delete("/me", authMiddleware, controller.deleteAccount);
+
 export { router as userRoutes };

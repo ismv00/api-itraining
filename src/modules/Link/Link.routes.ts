@@ -63,4 +63,11 @@ router.get(
   controller.getApprovedLink,
 );
 
+router.delete(
+  "/:id",
+  authMiddleware,
+  roleMiddleware(Role.PERSONAL),
+  controller.unlinkStudent,
+);
+
 export { router as linkRoutes };

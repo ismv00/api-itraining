@@ -104,4 +104,17 @@ export class LinkController {
       next(error);
     }
   }
+
+  async unlinkStudent(
+    req: Request<{ id: string }>,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      await service.unlinkStudent(req.params.id, req.user!.userId);
+      res.status(204).send();
+    } catch (error) {
+      next(error);
+    }
+  }
 }

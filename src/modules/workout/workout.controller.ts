@@ -34,4 +34,21 @@ export class WorkoutController {
       next(error);
     }
   }
+
+  async delete(
+    req: Request<{ id: string }>,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      await service.deleteWorkout(
+        req.params.id,
+        req.user!.userId,
+        req.user!.role,
+      );
+      res.status(204).send();
+    } catch (error) {
+      next(error);
+    }
+  }
 }
