@@ -12,6 +12,7 @@ app.use(
       "http://localhost:3001",
       "https://itraining.com.br",
       "https://www.itraining.com.br",
+      "http://200.234.219.4:3333",
     ],
     credentials: true,
   }),
